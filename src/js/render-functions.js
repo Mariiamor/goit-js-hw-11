@@ -29,8 +29,4 @@ export function renderImages(images) {
 export function clearGallery() {
   gallery.innerHTML = "";
 }
-
-
-export function clearGallery() {
-  gallery.innerHTML = "";
-}
+git 
