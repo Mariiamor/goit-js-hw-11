@@ -7,9 +7,9 @@ export function fetchImages(query) {
   const url = `${BASE_URL}?key=${API_KEY}&q=${encodeURIComponent(query)}&image_type=photo&orientation=horizontal&safesearch=true`;
 
   return axios.get(url).then(response => {
-    if (response.data.hits.length === 0) {
-      return Promise.reject("No images found.");
-    }
-    return response.data.hits;
-  });
+  if (!response.data.hits || response.data.hits.length === 0) {
+    return Promise.reject("No images found.");
+  }
+  return response.data.hits;
+});
 }
