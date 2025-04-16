@@ -1,13 +1,18 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import '../css/sl-custom.css';
+import '../css/custom.css';
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import '../css/custom-easytoast.css';
+import '../css/iziToast.css';
 import iconNoResults from '../img/icon-no-results.svg';
 
 const gallery = document.querySelector('.gallery');
-const loader = document.querySelector('.loader-box')
+const loader = document.querySelector('.loader-box');
+
+let lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 export function renderImages(images) {
   const galleryHtml = images
@@ -60,22 +65,21 @@ export function renderImages(images) {
 
   gallery.innerHTML = galleryHtml;
   lightbox.refresh();
-  hideLoader()
+  hideLoader();
 }
 
-const lightbox = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
-});
-
-export function showLoader(){
-  gallery.classList.add('hidden')
-  loader.classList.remove('hidden')
+export function clearGallery() {
+  gallery.innerHTML = '';
 }
 
-export function hideLoader(){
-  gallery.classList.remove('hidden')
-  loader.classList.add('hidden')
+export function showLoader() {
+  gallery.classList.add('hidden');
+  loader.classList.remove('hidden');
+}
+
+export function hideLoader() {
+  gallery.classList.remove('hidden');
+  loader.classList.add('hidden');
 }
 
 export function showMessage() {
