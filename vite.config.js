@@ -3,7 +3,6 @@ import { globSync } from 'glob';
 import injectHTML from 'vite-plugin-html-inject';
 import FullReload from 'vite-plugin-full-reload';
 
-
 export default defineConfig(({ command }) => {
   return {
     base: command === 'build' ? '/goit-js-hw-11/' : '/',
@@ -44,3 +43,4 @@ export default defineConfig(({ command }) => {
     ],
   };
 });
+
