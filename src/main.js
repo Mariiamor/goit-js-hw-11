@@ -6,6 +6,8 @@ import {
   showMessage,
   clearGallery,
 } from './js/render-functions';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('form');
 const input = document.querySelector('#search-text');
@@ -14,31 +16,48 @@ form.addEventListener('submit', handleSubmit);
 
 function handleSubmit(e) {
   e.preventDefault();
+
   const searchText = input.value.trim();
 
-  if (!searchText) return;
+  if (!searchText) {
+    iziToast.error({
+      title: 'Error',
+      message: 'Please enter a search query!',
+      position: 'topRight',
+    });
+    return;
+  }
 
-  input.value = '';
-  clearGallery();
-  showLoader();
+  clearGallery();     
+  showLoader();       
+  input.value = '';   
+
+  iziToast.info({
+    message: 'Loading images, please wait...',
+    position: 'topRight',
+    timeout: 2000,
+  });
 
   fetchImages(searchText)
     .then(response => {
       const images = response.data.hits;
-      handleSearchResults(images);
+
+      if (!images.length) {
+        showMessage(); 
+        return;
+      }
+
+      renderImages(images);
     })
-    .catch(err => {
-      console.error('Error fetching images:', err);
+    .catch(error => {
+      iziToast.error({
+        title: 'Error',
+        message: 'Oops! Something went wrong. Please try again later.',
+        position: 'topRight',
+      });
+      console.error(error);
+    })
+    .finally(() => {
       hideLoader();
     });
-}
-
-function handleSearchResults(images) {
-  if (!images.length) {
-    showMessage();
-    hideLoader();
-    return;
-  }
-
-  renderImages(images);
 }
